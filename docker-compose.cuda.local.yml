@@ -55,7 +55,7 @@ services:
       - ${MODEL:-lightonai/GTE-ModernColBERT-v1}
       - --cuda
       - --batch-size
-      - "128"
+      - "8"
       - --model-pool-size
       - "${MODEL_POOL_SIZE:-1}"
       - --query-length

@@ -1,4 +1,4 @@
-.PHONY: all build test lint fmt check clean example install-hooks compare-reference lint-python fmt-python evaluate-scifact evaluate-scifact-cached compare-scifact compare-scifact-cached benchmark-scifact-update benchmark-scifact-api benchmark-scifact-docker benchmark-scifact-docker-cuda benchmark-scifact-docker-keep benchmark-scifact-stress benchmark-fastplaid-compat benchmark-fastplaid-compat-keep benchmark-api-encoding benchmark-onnx-api benchmark-onnx-api-cuda benchmark-onnx-api-gte benchmark-onnx-api-gte-int8 benchmark-onnx-vs-pylate ci-api ci-onnx ci-cli test-api-integration test-api-rate-limit onnx-setup onnx-export onnx-export-all onnx-benchmark onnx-benchmark-rust onnx-compare onnx-lint onnx-fmt docker-build docker-build-cuda docker-up docker-up-cuda docker-down docker-logs kill-api bump-version
+.PHONY: all build test lint fmt check clean example install-hooks compare-reference lint-python fmt-python evaluate-scifact evaluate-scifact-cached compare-scifact compare-scifact-cached benchmark-scifact-update benchmark-scifact-api benchmark-scifact-docker benchmark-scifact-docker-cuda benchmark-scifact-docker-keep benchmark-scifact-stress benchmark-fastplaid-compat benchmark-fastplaid-compat-keep benchmark-api-encoding benchmark-onnx-api benchmark-onnx-api-cuda benchmark-onnx-api-gte benchmark-onnx-api-gte-int8 benchmark-onnx-vs-pylate ci-api ci-onnx ci-cli test-api-integration test-api-rate-limit onnx-setup onnx-export onnx-export-all onnx-benchmark onnx-benchmark-rust onnx-compare onnx-lint onnx-fmt docker-build docker-build-cuda docker-build-cuda-12-6 docker-up docker-up-cuda docker-up-cuda-12-6 docker-down docker-logs kill-api bump-version
 
 all: fmt lint test
 
@@ -209,6 +209,16 @@ start-cpu-docker-build:
 
 start-cuda-docker-build:
 	docker build -t next-plaid-api:cuda -f next-plaid-api/Dockerfile --target runtime-cuda .
+
+# Build Docker image with CUDA 12.6 support (for newer NVIDIA drivers on Windows/Linux)
+# Requires: NVIDIA Container Toolkit, CUDA 12.6 compatible driver (Windows 551+/Linux 550+)
+docker-build-cuda-12-6:
+	docker build -t next-plaid-api:cuda-12.6 -f next-plaid-api/Dockerfile.cuda126 --target runtime-cuda .
+
+# Start Docker Compose with CUDA 12.6 (GPU encoding with newer CUDA version)
+# Requires: NVIDIA Container Toolkit, docker-build-cuda-12-6
+docker-up-cuda-12-6: docker-build-cuda-12-6
+	docker compose -f docker-compose.yml -f docker-compose.cuda.yml up -d
 
 # =============================================================================
 # Version management
