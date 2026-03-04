@@ -1,0 +1,15 @@
+# Remote GPU Server Configuration
+
+# URL of your remote GPU server running NextPlaid API
+# Use localhost:8080 if using SSH tunnel
+# Use the server's IP if connecting directly
+REMOTE_GPU_URL=http://localhost:8080
+
+# Index name for your project
+INDEX_NAME=remote_project
+
+# Project path to index (on your laptop)
+PROJECT_PATH=.
+
+# SSH tunnel (optional - for reference)
+# ssh -L 8080:localhost:8080 user@your-gpu-server-ip

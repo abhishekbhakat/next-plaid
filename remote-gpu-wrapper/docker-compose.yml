@@ -1,0 +1,65 @@
+# Docker Compose for NextPlaid API on GPU server
+# Run this on your NVIDIA 4070 Super (or other GPU) machine
+#
+# For CUDA 12.6 (recommended for Windows 11 with newer drivers):
+#   docker-compose -f docker-compose.yml -f docker-compose.cuda126.yml up -d
+#
+# For standard CUDA 12.4:
+#   docker-compose up -d
+
+services:
+  nextplaid-gpu:
+    image: ${NEXTPLAID_IMAGE:-ghcr.io/lightonai/next-plaid:cuda-1.0.8}
+    container_name: nextplaid-gpu
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persistent index storage
+      - ./data/indices:/data/indices
+      # HuggingFace model cache
+      - ~/.cache/huggingface:/models
+    environment:
+      - RUST_LOG=info
+      - NVIDIA_VISIBLE_DEVICES=all
+    command:
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8080"
+      - --index-dir
+      - /data/indices
+      - --model
+      - lightonai/LateOn-Code
+      - --cuda
+      - --batch-size
+      - "64"
+      - --parallel
+      - "4"
+      # Uncomment for INT8 quantization (2x faster)
+      # - --int8
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # Optional: nginx reverse proxy with basic auth
+  # Uncomment if you want authentication
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./.htpasswd:/etc/nginx/.htpasswd:ro
+  #   depends_on:
+  #     - nextplaid-gpu

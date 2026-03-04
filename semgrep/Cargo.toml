@@ -1,0 +1,23 @@
+[package]
+name = "semgrep"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+reqwest = { version = "0.12", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+tree-sitter = "0.25"
+tree-sitter-python = "0.25"
+tree-sitter-typescript = "0.23"
+tree-sitter-javascript = "0.25"
+tree-sitter-go = "0.25"
+tree-sitter-rust = "0.24"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+colored = "2"
+anyhow = "1"
+dirs = "5"
+walkdir = "2"
+
+[workspace]
