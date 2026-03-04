@@ -7,7 +7,18 @@ INSTALL_DIR = /usr/local/bin
 CARGO_BIN = $(HOME)/.cargo/bin
 
 # Default target
-.PHONY: all build install uninstall clean test fmt lint
+.PHONY: all build install uninstall clean test fmt lint help
+
+help:
+	@echo "Available targets:"
+	@echo "  all       - Build the project (default)"
+	@echo "  build     - Build release binary"
+	@echo "  install   - Install binary to system"
+	@echo "  uninstall - Remove installed binary"
+	@echo "  clean     - Remove build artifacts"
+	@echo "  test      - Run tests"
+	@echo "  fmt       - Format code"
+	@echo "  lint      - Run clippy lints"
 
 all: build
 
