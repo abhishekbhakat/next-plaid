@@ -217,8 +217,17 @@ docker-build-cuda-12-6:
 
 # Start Docker Compose with CUDA 12.6 (GPU encoding with newer CUDA version)
 # Requires: NVIDIA Container Toolkit, docker-build-cuda-12-6
+# Usage:
+#   make docker-up-cuda-12-6                    # Use all GPUs
+#   make docker-up-cuda-12-6 GPU_DEVICE=0       # Use GPU 0 only
+#   make docker-up-cuda-12-6 GPU_DEVICE=1       # Use GPU 1 only
+#   make docker-up-cuda-12-6 GPU_DEVICE=0,1     # Use GPUs 0 and 1
 docker-up-cuda-12-6: docker-build-cuda-12-6
+ifdef GPU_DEVICE
+	NVIDIA_VISIBLE_DEVICES=$(GPU_DEVICE) docker compose -f docker-compose.yml -f docker-compose.cuda.yml up -d
+else
 	docker compose -f docker-compose.yml -f docker-compose.cuda.yml up -d
+endif
 
 # =============================================================================
 # Version management
