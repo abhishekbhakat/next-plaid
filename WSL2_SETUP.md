@@ -161,12 +161,12 @@ netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 conne
 
 ## Summary
 
-| Component | Purpose |
-|-----------|---------|
-| **WSL2** | Linux environment with native GPU access |
-| **Docker in WSL2** | Container runtime with proper NVIDIA support |
-| **NVIDIA Container Toolkit** | GPU passthrough for Docker containers |
-| **netsh portproxy** | Forward Windows ports to WSL2 |
+| Component                    | Purpose                                      |
+|------------------------------|----------------------------------------------|
+| **WSL2**                     | Linux environment with native GPU access     |
+| **Docker in WSL2**           | Container runtime with proper NVIDIA support |
+| **NVIDIA Container Toolkit** | GPU passthrough for Docker containers        |
+| **netsh portproxy**          | Forward Windows ports to WSL2                |
 
 ## Quick Reference
 
